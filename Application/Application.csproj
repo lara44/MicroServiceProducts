@@ -5,8 +5,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.SQS" Version="4.0.0-preview" />
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.8" />
   </ItemGroup>
 
   <PropertyGroup>

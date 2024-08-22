@@ -1,5 +1,8 @@
+using Amazon.SQS;
+using Application.Interfaces;
 using Application.Products.Commands.Handlers;
 using Domain.Repositories;
+using Infrastructure.AWS;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using MediatR;
@@ -9,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
  
 // Configuración de MediatR
 builder.Services.AddMediatR(typeof(CreateProductCommandHandler).Assembly);
+builder.Services.AddAWSService<IAmazonSQS>();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -17,6 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IAwsService, AwsService>();
 
 var app = builder.Build();
 
@@ -27,6 +32,5 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
 app.MapControllers();
-app.Run();
+await app.RunAsync();
