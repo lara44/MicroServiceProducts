@@ -1,4 +1,4 @@
-namespace Infrastructure.AWS
+namespace Infrastructure.Configuration
 {
     public class AwsOptions
     {

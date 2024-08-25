@@ -1,9 +1,11 @@
 using Amazon.SQS;
-using Application.Interfaces;
+using Application.Common.Interfaces;
 using Application.Products.Commands.Handlers;
+using Application.Products.Services;
+using Application.Products.Services.Interfaces;
 using Domain.Repositories;
-using Infrastructure.AWS;
 using Infrastructure.Data;
+using Infrastructure.Messaging;
 using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +14,20 @@ var builder = WebApplication.CreateBuilder(args);
  
 // Configuración de MediatR
 builder.Services.AddMediatR(typeof(CreateProductCommandHandler).Assembly);
-builder.Services.AddAWSService<IAmazonSQS>();
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add connections
+builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddAWSService<IAmazonSQS>();
+
+// Add Interfaces
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IAwsService, AwsService>();
+builder.Services.AddScoped<IEventPublisher, SqsEventPublisher>();
+builder.Services.AddScoped<IProductEventService, ProductEventService>();
 
 var app = builder.Build();
 
