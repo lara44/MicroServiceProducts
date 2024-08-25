@@ -22,5 +22,15 @@ namespace Infrastructure.Repositories
             await _dataContext.Products.AddAsync(productEntity);
             await _dataContext.SaveChangesAsync();
         }
+
+        public async Task<Product> GetByIdAsync(int id)
+        {
+            var product = await _dataContext.Products.FindAsync(id); 
+            if (product == null) 
+            {
+                return null!;
+            }
+            return ProductMapper.ToDomainProduct(product);
+        }
     }
 }
