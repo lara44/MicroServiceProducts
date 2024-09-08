@@ -1,5 +1,6 @@
 
 using Application.Products.Commands;
+using Application.Products.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,46 @@ namespace WebApi.Controllers
                 errorMessage += $" Details: {ex.Message}";
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = errorMessage });
             }
+        }
 
+        [HttpGet("GetProduct/{id}")]
+        public async Task<IActionResult> GetProduct(Guid id)
+        {
+            try
+            {
+                var product = await _mediator.Send(new GetProductByIdQuery(id));
+                return Ok(product);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An unexpected error occurred while processing your request.";
+                errorMessage += $" Details: {ex.Message}";
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = errorMessage });
+            }
+        }
+
+        [HttpGet("GetProducts")]
+        public async Task<IActionResult> GetProducts()
+        {
+            try
+            {
+                var products = await _mediator.Send(new GetProductsAllQuery());
+                return Ok(products);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An unexpected error occurred while processing your request.";
+                errorMessage += $" Details: {ex.Message}";
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = errorMessage });
+            }
         }
     }
 }

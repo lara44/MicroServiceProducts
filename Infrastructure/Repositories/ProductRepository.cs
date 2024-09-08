@@ -4,6 +4,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -21,6 +22,23 @@ namespace Infrastructure.Repositories
             var productEntity = ProductMapper.ToProductEntity(product);
             await _dataContext.Products.AddAsync(productEntity);
             await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task<Product> GetByIdAsync(Guid id)
+        {
+            var product = await _dataContext.Products.FindAsync(id); 
+            if (product == null) 
+            {
+                return null!;
+            }
+            return ProductMapper.ToDomainProduct(product);
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            var products = await _dataContext.Products.ToListAsync(); 
+            var domainProducts = products.Select(ProductMapper.ToDomainProduct);
+            return domainProducts;
         }
     }
 }
