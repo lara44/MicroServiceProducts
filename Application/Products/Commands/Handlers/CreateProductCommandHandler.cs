@@ -3,6 +3,7 @@ using MediatR;
 using Domain.Entities;
 using Domain.Repositories;
 using Application.Products.Services.Interfaces;
+using Domain.ValueObjects;
 
 namespace Application.Products.Commands.Handlers
 {
@@ -22,7 +23,8 @@ namespace Application.Products.Commands.Handlers
 
         public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = new Product(Guid.NewGuid(), request.Name, request.Price, request.Stock);
+            var price = new Price(request.Price);
+            var product = new Product(Guid.NewGuid(), request.Name, price, request.Stock);
             await _productRepository.AddAsync(product);
 
             await _productEventService.PublishProductCreatedEventAsync(product, cancellationToken);

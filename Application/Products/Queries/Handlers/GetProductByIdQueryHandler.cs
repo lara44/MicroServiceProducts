@@ -5,16 +5,16 @@ using MediatR;
 
 namespace Application.Products.Queries.Handlers
 {
-    public class GetProductQueryHandler : IRequestHandler<GetProductQuery, Product>
+    public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product>
     {
         private readonly IProductRepository _productRepository;
 
-        public GetProductQueryHandler(IProductRepository productRepository)
+        public GetProductByIdQueryHandler(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
 
-        public async Task<Product> Handle(GetProductQuery request, CancellationToken cancellationToken)
+        public async Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
             if (product == null)

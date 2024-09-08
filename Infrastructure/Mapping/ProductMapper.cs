@@ -1,25 +1,30 @@
 
 
+using Domain.ValueObjects;
+
 namespace Infrastructure.Mapping
 {
     public static class ProductMapper
     {
         public static Infrastructure.Data.Entities.Product ToProductEntity(Domain.Entities.Product product)
         {
+            var price = new Price(product.Price.Amount); 
+
             return new Infrastructure.Data.Entities.Product
             {
-                Id = product.Id.GetHashCode(),
+                Id = product.Id,
                 Name = product.Name,
-                Price = product.Price,
+                Price = price.Amount,
                 Stock = product.Stock,
             };
         }
         public static Domain.Entities.Product ToDomainProduct(Infrastructure.Data.Entities.Product product)
         {
+            var price = new Price(product.Price); 
             return new Domain.Entities.Product(
-                Guid.NewGuid(), 
+                product.Id,
                 product.Name,
-                product.Price,
+                price,
                 product.Stock
             );
         }

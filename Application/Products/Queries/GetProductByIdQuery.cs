@@ -5,11 +5,11 @@ using MediatR;
 
 namespace Application.Products.Queries
 {
-    public class GetProductQuery : IRequest<Product>
+    public class GetProductByIdQuery : IRequest<Product>
     {
-        public int Id { get; }
+        public Guid Id { get; }
 
-        public GetProductQuery(int id)
+        public GetProductByIdQuery(Guid id)
         {
             Id = id;
         }

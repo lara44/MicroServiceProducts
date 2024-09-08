@@ -1,9 +1,12 @@
 using Amazon.SQS;
 using Application.Common.Interfaces;
 using Application.Products.Commands.Handlers;
+using Application.Products.Commands.Validators;
 using Application.Products.Services;
 using Application.Products.Services.Interfaces;
 using Domain.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure.Data;
 using Infrastructure.Messaging;
 using Infrastructure.Repositories;
@@ -14,6 +17,16 @@ var builder = WebApplication.CreateBuilder(args);
  
 // Configuración de MediatR
 builder.Services.AddMediatR(typeof(CreateProductCommandHandler).Assembly);
+
+// Agregar FluentValidation
+builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
+
+// Registrar validadores automáticamente desde el ensamblado
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProductCommandValidator>();
+
+
 
 // Add services to the container.
 builder.Services.AddControllers();
