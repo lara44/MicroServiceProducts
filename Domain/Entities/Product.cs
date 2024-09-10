@@ -1,9 +1,12 @@
 
+using Domain.Common;
+using Domain.Events;
 using Domain.ValueObjects;
+using MediatR;
 
 namespace Domain.Entities
 {
-    public sealed class Product 
+    public sealed class Product : Entity
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
@@ -21,6 +24,9 @@ namespace Domain.Entities
             Name = name;
             Price = price;
             Stock = stock;
+
+            // Emitir evento de dominio
+            AddDomainEvent(new ProductCreatedEvent(this));
         }
 
         public void UpdateProduct(string name, Price price, int stock)

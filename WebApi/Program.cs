@@ -4,6 +4,7 @@ using Application.Products.Commands.Handlers;
 using Application.Products.Commands.Validators;
 using Application.Products.Services;
 using Application.Products.Services.Interfaces;
+using Domain.Common.Interfaces;
 using Domain.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -41,6 +42,7 @@ builder.Services.AddAWSService<IAmazonSQS>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IEventPublisher, SqsEventPublisher>();
 builder.Services.AddScoped<IProductEventService, ProductEventService>();
+builder.Services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 
 var app = builder.Build();
 
