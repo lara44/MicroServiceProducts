@@ -25,7 +25,6 @@ namespace Domain.Entities
             Price = price;
             Stock = stock;
 
-            // Emitir evento de dominio
             AddDomainEvent(new ProductCreatedEvent(this));
         }
 
@@ -34,6 +33,8 @@ namespace Domain.Entities
             Name = name;
             Price = price;
             Stock = stock;
+            
+            AddDomainEvent(new ProductUpdatedEvent(this));
         }
 
         public void ReduceStock(int quantity)

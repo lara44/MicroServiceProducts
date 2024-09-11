@@ -16,17 +16,17 @@ namespace Application.Products.Services
             _eventPublisher = eventPublisher;
         }
 
-        public async Task PublishProductCreatedEventAsync(Product product, CancellationToken cancellationToken)
+        public async Task PublishProductCreatedEventAsync(Product product, string eventType, CancellationToken cancellationToken)
         {
             var queueName = "ProductEventsQueue";
-            var eventType = "ProductCreated";
-
-            await _eventPublisher.PublishAsync(new
+            var message = new
             {
                 Id = product.Id,
                 Name = product.Name,
                 Price = product.Price
-            }, queueName, eventType, cancellationToken);
+            };
+
+            await _eventPublisher.PublishAsync(message, queueName, eventType, cancellationToken);
         }
     }
 }

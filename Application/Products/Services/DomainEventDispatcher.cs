@@ -18,17 +18,15 @@ namespace Application.Products.Services
         public async Task DispatchEventsAsync(Entity entity)
         {
             var domainEvents = entity.DomainEvents.ToList();
-            entity.ClearDomainEvents(); // Limpiar los eventos después de despacharlos
+
+            // Limpiar los eventos después de despacharlos
+            entity.ClearDomainEvents(); 
 
             foreach (var domainEvent in domainEvents)
             {
-                await _mediator.Publish(domainEvent);  // Publicar evento a través de MediatR
+                // Publicar evento a través de MediatR
+                await _mediator.Publish(domainEvent);  
             }
-        }
-
-        public Task DispatchEventsAsync(Product product)
-        {
-            throw new NotImplementedException();
         }
     }
 }

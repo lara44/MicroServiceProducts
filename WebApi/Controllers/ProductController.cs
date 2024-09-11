@@ -18,6 +18,31 @@ namespace WebApi.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        [HttpPut("UpdateProduct")]
+        public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] UpdateProductCommand command)
+        {
+            try
+            {
+                if (command == null || id != command.Id)
+                {
+                    return BadRequest("Invalid product data or ID mismatch");
+                }
+
+                await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                // Retornar 404 si no se encuentra el producto
+                return NotFound(new { Message = "Producto con ID {id} no encontrado", Detail = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Retornar error 500 si ocurre una excepción no manejada
+                return StatusCode(500, new { Code = 404, Message = "Ocurrió un error al actualizar el producto", Detail = ex.Message });
+            }
+        }
+
         [HttpPost("CreateProduct")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
         {
@@ -76,7 +101,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                var products = await _mediator.Send(new GetProductsAllQuery());
+                var products = await _mediator.Send(new GetAllProductsQuery());
                 return Ok(products);
             }
             catch (KeyNotFoundException ex)

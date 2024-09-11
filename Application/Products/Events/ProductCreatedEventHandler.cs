@@ -3,7 +3,7 @@ using Application.Products.Services.Interfaces;
 using Domain.Events;
 using MediatR;
 
-namespace Application.Products.EventHandlers
+namespace Application.Products.Events
 {
     public class ProductCreatedEventHandler : INotificationHandler<ProductCreatedEvent>
     {
@@ -16,8 +16,7 @@ namespace Application.Products.EventHandlers
 
         public async Task Handle(ProductCreatedEvent notification, CancellationToken cancellationToken)
         {
-            // Publicar el evento en SQS a través de IProductEventService
-            await _productEventService.PublishProductCreatedEventAsync(notification.Product, cancellationToken);
+            await _productEventService.PublishProductCreatedEventAsync(notification.Product, "ProductCreated", cancellationToken);
         }
     }
 }

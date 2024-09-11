@@ -26,10 +26,7 @@ namespace Application.Products.Commands.Handlers
             var price = new Price(request.Price);
             var product = new Product(Guid.NewGuid(), request.Name, price, request.Stock);
 
-            // 1. Guardar el producto en el repositorio (base de datos)
             await _productRepository.AddAsync(product);
-
-            // 2. Despachar los eventos de dominio asociados (como el evento ProductCreatedEvent)
             await _domainEventDispatcher.DispatchEventsAsync(product);
             return product.Id;
         }

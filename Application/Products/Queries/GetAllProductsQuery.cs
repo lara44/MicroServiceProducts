@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Products.Queries
 {
-    public class GetProductsAllQuery : IRequest<IEnumerable<Product>>
+    public class GetAllProductsQuery : IRequest<IEnumerable<Product>>
     {
         
     }
