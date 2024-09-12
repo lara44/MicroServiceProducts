@@ -43,22 +43,15 @@ namespace Infrastructure.Repositories
 
         public async Task UpdateAsync(Product product)
         {
-            // Recuperar el producto existente de la base de datos
             var existingProduct = await _dataContext.Products.FirstOrDefaultAsync(p => p.Id == product.Id);
 
             if (existingProduct != null)
             {
-                // Utilizar Attach para marcar la entidad como modificada
-                _dataContext.Products.Attach(existingProduct);
-
-                // Actualizar las propiedades del producto
-                existingProduct.Name = product.Name;
-                existingProduct.Price = product.Price.Amount;
-                existingProduct.Stock = product.Stock;
-
-                // Guardar los cambios en la base de datos
-                await _dataContext.SaveChangesAsync();
+                var productEntity = ProductMapper.ToProductEntity(product);
+                _dataContext.Entry(existingProduct).CurrentValues.SetValues(productEntity);
             }
+
+            await _dataContext.SaveChangesAsync();
         }
     }
 }

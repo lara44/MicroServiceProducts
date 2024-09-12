@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Products.Services
 {
-     public class DomainEventDispatcher : IDomainEventDispatcher
+    public class DomainEventDispatcher : IDomainEventDispatcher
     {
         private readonly IMediator _mediator;
 
@@ -20,12 +20,12 @@ namespace Application.Products.Services
             var domainEvents = entity.DomainEvents.ToList();
 
             // Limpiar los eventos después de despacharlos
-            entity.ClearDomainEvents(); 
+            entity.ClearDomainEvents();
 
             foreach (var domainEvent in domainEvents)
             {
                 // Publicar evento a través de MediatR
-                await _mediator.Publish(domainEvent);  
+                await _mediator.Publish(domainEvent);
             }
         }
     }

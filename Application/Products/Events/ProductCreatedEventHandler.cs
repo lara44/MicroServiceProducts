@@ -7,7 +7,6 @@ namespace Application.Products.Events
 {
     public class ProductCreatedEventHandler : INotificationHandler<ProductCreatedEvent>
     {
-        
         private const string EventType = "ProductCreated";
         private readonly IProductEventService _productEventService;
 

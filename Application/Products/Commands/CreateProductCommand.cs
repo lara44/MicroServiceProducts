@@ -1,6 +1,5 @@
 
 
-using System.ComponentModel.DataAnnotations;
 using MediatR;
 
 namespace Application.Products.Commands
