@@ -9,9 +9,13 @@ namespace Domain.Common
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
 
         // Método para agregar eventos de dominio
-        protected void AddDomainEvent(INotification eventItem)
+        protected void AddDomainEvent(INotification eventItem)     
         {
-            _domainEvents.Add(eventItem);
+            if (!_domainEvents.Contains(eventItem))
+            {
+                Console.WriteLine("Adding event: " + eventItem.GetType().Name);
+                _domainEvents.Add(eventItem);
+            }
         }
 
         // Método para limpiar los eventos

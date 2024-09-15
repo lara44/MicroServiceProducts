@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
  
 // Configuración de MediatR
 builder.Services.AddMediatR(typeof(CreateProductCommandHandler).Assembly);
-builder.Services.AddMediatR(typeof(UpdateProductCommandHandler).Assembly);
+// builder.Services.AddMediatR(typeof(UpdateProductCommandHandler).Assembly);
 
 // Agregar FluentValidation
 builder.Services.AddControllers();
