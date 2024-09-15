@@ -13,6 +13,7 @@ using Infrastructure.Messaging;
 using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
  
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IEventPublisher, SqsEventPublisher>();
 builder.Services.AddScoped<IProductEventService, ProductEventService>();
 builder.Services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
 var app = builder.Build();
 
@@ -51,6 +53,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Registrar el middleware de manejo de excepciones
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
 
 app.MapControllers();
 await app.RunAsync();
