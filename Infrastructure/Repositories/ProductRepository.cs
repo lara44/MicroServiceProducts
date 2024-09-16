@@ -1,7 +1,6 @@
 
-
-using Domain.Entities;
-using Domain.Repositories;
+using Domain.ProductAggregate.Entities;
+using Domain.ProductAggregate.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Mapping;
 using Microsoft.EntityFrameworkCore;

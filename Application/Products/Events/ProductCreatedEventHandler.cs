@@ -1,6 +1,6 @@
 
 using Application.Common.Interfaces;
-using Domain.Events;
+using Domain.ProductAggregate.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

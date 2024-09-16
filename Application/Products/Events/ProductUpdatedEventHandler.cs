@@ -1,23 +1,41 @@
 
+using Application.Common.Interfaces;
 using Application.Products.Services.Interfaces;
-using Domain.Events;
+using Domain.ProductAggregate.Events;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Products.Events
 {
     public class ProductUpdatedEventHandler : INotificationHandler<ProductUpdatedEvent>
     {
         private const string EventType = "ProductUpdated";
-        private readonly IProductEventService _productEventService;
+        private readonly IEventPublisher _eventPublisher;
+        private readonly ILogger<ProductUpdatedEventHandler> _logger;
 
-        public ProductUpdatedEventHandler(IProductEventService productEventService)
+
+        public ProductUpdatedEventHandler(
+            IEventPublisher eventPublisher,
+            ILogger<ProductUpdatedEventHandler> logger
+        )
         {
-            _productEventService = productEventService;
+            _eventPublisher = eventPublisher;
+            _logger = logger;
         }
 
         public async Task Handle(ProductUpdatedEvent notification, CancellationToken cancellationToken)
         {
-            await _productEventService.PublishProductCreatedEventAsync(notification.Product, EventType, cancellationToken);
+            var queueName = "ProductEventsQueue";
+            var message = new
+            {
+                Id = notification.Product.Id,
+                Name = notification.Product.Name,
+                Price = notification.Product.Price
+            };
+
+            _logger.LogInformation($"Publishing ProductCreated event for Product ID: {notification.Product.Id}");
+            await _eventPublisher.PublishAsync(message, queueName, EventType, cancellationToken);
+            _logger.LogInformation($"Published ProductCreated event for Product ID: {notification.Product.Id}");
         }
     }
 }

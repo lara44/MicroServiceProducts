@@ -1,5 +1,5 @@
 
-using Domain.Entities;
+using Domain.ProductAggregate.Entities;
 using MediatR;
 
 namespace Application.Products.Queries
