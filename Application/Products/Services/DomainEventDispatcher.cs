@@ -1,7 +1,7 @@
 
 using Domain.Common;
 using Domain.Common.Interfaces;
-using Domain.Entities;
+using Domain.ProductAggregate;
 using MediatR;
 
 namespace Application.Products.Services
@@ -15,12 +15,12 @@ namespace Application.Products.Services
             _mediator = mediator;
         }
 
-        public async Task DispatchEventsAsync(Entity entity)
+        public async Task DispatchEventsAsync(AggregateRoot aggregateRoot)
         {
-            var domainEvents = entity.DomainEvents.ToList();
+            var domainEvents = aggregateRoot.DomainEvents.ToList();
 
             // Limpiar los eventos después de despacharlos
-            entity.ClearDomainEvents();
+            aggregateRoot.ClearDomainEvents();
 
             foreach (var domainEvent in domainEvents)
             {

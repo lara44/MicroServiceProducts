@@ -1,6 +1,5 @@
 
 using Application.Common.Interfaces;
-using Application.Products.Services.Interfaces;
 using Domain.ProductAggregate.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -33,9 +32,9 @@ namespace Application.Products.Events
                 Price = notification.Product.Price
             };
 
-            _logger.LogInformation($"Publishing ProductCreated event for Product ID: {notification.Product.Id}");
+            _logger.LogInformation($"Publishing ProductUpdated event for Product ID: {notification.Product.Id}");
             await _eventPublisher.PublishAsync(message, queueName, EventType, cancellationToken);
-            _logger.LogInformation($"Published ProductCreated event for Product ID: {notification.Product.Id}");
+            _logger.LogInformation($"Published ProductUpdated event for Product ID: {notification.Product.Id}");
         }
     }
 }
