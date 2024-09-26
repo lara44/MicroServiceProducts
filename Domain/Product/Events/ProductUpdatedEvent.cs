@@ -1,8 +1,7 @@
-using System;
-using Domain.ProductAggregate.Entities;
+
 using MediatR;
 
-namespace Domain.ProductAggregate.Events;
+namespace Domain.Product.Events;
 
  public class ProductUpdatedEvent : INotification
     {

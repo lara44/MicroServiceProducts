@@ -1,7 +1,8 @@
-using System;
-using Domain.ProductAggregate.Events;
 
-namespace Domain.ProductAggregate.Entities;
+using Domain.Common.Models;
+using Domain.Product.Events;
+
+namespace Domain.Product;
 
 public sealed class Product : AggregateRoot
     {

@@ -1,8 +1,8 @@
 
-using Domain.ProductAggregate.Entities;
+using Domain.Product;
 using MediatR;
 
-namespace Domain.ProductAggregate.Events;
+namespace Domain.Product.Events;
 
 public class ProductCreatedEvent : INotification
     {

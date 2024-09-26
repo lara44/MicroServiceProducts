@@ -4,7 +4,7 @@ using Application.Products.Commands.Handlers;
 using Application.Products.Commands.Validators;
 using Application.Products.Services;
 using Domain.Common.Interfaces;
-using Domain.ProductAggregate.Repositories;
+using Domain.Product.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Data;

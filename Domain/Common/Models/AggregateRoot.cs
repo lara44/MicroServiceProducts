@@ -1,7 +1,7 @@
-using System;
+
 using MediatR;
 
-namespace Domain.ProductAggregate;
+namespace Domain.Common.Models;
 
 public class AggregateRoot
 {

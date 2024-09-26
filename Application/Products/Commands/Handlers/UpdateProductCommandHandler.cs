@@ -1,6 +1,6 @@
 using Domain.Common.Interfaces;
-using Domain.ProductAggregate;
-using Domain.ProductAggregate.Repositories;
+using Domain.Product;
+using Domain.Product.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

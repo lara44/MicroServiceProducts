@@ -2,9 +2,8 @@
 using MediatR;
 using Domain.Common.Interfaces;
 using Microsoft.Extensions.Logging;
-using Domain.ProductAggregate.Repositories;
-using Domain.ProductAggregate;
-using Domain.ProductAggregate.Entities;
+using Domain.Product.Repositories;
+using Domain.Product;
 
 namespace Application.Products.Commands.Handlers
 {

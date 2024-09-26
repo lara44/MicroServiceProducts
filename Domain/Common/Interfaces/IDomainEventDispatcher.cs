@@ -1,6 +1,6 @@
 
 
-using Domain.ProductAggregate;
+using Domain.Common.Models;
 
 namespace Domain.Common.Interfaces
 {

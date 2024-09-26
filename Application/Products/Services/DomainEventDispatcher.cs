@@ -1,7 +1,7 @@
 
-using Domain.Common;
+
 using Domain.Common.Interfaces;
-using Domain.ProductAggregate;
+using Domain.Common.Models;
 using MediatR;
 
 namespace Application.Products.Services

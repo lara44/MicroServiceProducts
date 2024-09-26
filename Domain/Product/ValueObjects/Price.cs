@@ -1,6 +1,5 @@
-using System;
 
-namespace Domain.ProductAggregate;
+namespace Domain.Product;
 
 public class Price
     {

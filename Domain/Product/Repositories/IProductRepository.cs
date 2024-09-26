@@ -1,7 +1,6 @@
 
-using Domain.ProductAggregate.Entities;
 
-namespace Domain.ProductAggregate.Repositories;
+namespace Domain.Product.Repositories;
 
  public interface IProductRepository
     {
