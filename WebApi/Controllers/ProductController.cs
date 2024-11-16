@@ -18,77 +18,43 @@ namespace WebApi.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        [HttpPut("UpdateProduct")]
+        public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] UpdateProductCommand command)
+        {
+            if (command == null || id != command.Id)
+            {
+                return BadRequest("Invalid product data or ID mismatch");
+            }
+
+            await _mediator.Send(command);
+            return NoContent();
+
+        }
+
         [HttpPost("CreateProduct")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+                return BadRequest(ModelState);  // Validación de entrada
+            }
 
-                var productId = await _mediator.Send(command);
-                return Ok(new { id = productId });
-            }
-            catch (DbUpdateException ex)
-            {
-                var errorMessage = "An error occurred while saving the product. Please ensure that the product name is unique.";
-                errorMessage += $" Details: {ex.Message}";
-                return BadRequest(new { message = errorMessage });
-            }
-            catch (InvalidOperationException ex)
-            {
-                var errorMessage = "An invalid operation occurred. Please check your request.";
-                errorMessage += $" Details: {ex.Message}";
-                return BadRequest(new { message = errorMessage });
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = "An unexpected error occurred while processing your request.";
-                errorMessage += $" Details: {ex.Message}";
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = errorMessage });
-            }
+            var productId = await _mediator.Send(command);
+            return Ok(new { id = productId });
         }
 
         [HttpGet("GetProduct/{id}")]
         public async Task<IActionResult> GetProduct(Guid id)
         {
-            try
-            {
-                var product = await _mediator.Send(new GetProductByIdQuery(id));
-                return Ok(product);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = "An unexpected error occurred while processing your request.";
-                errorMessage += $" Details: {ex.Message}";
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = errorMessage });
-            }
+            var product = await _mediator.Send(new GetProductByIdQuery(id));
+            return Ok(product);
         }
 
         [HttpGet("GetProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            try
-            {
-                var products = await _mediator.Send(new GetProductsAllQuery());
-                return Ok(products);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = "An unexpected error occurred while processing your request.";
-                errorMessage += $" Details: {ex.Message}";
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = errorMessage });
-            }
+            var products = await _mediator.Send(new GetAllProductsQuery());
+            return Ok(products);
         }
     }
 }

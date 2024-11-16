@@ -1,9 +1,11 @@
 
 
+using Domain.Common.Models;
+
 namespace Domain.Common.Interfaces
 {
     public interface IDomainEventDispatcher
     {
-        Task DispatchEventsAsync(Entity entity);
+        Task DispatchEventsAsync(AggregateRoot entity);
     }
 }

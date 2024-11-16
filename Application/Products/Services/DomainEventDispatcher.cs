@@ -1,12 +1,12 @@
 
-using Domain.Common;
+
 using Domain.Common.Interfaces;
-using Domain.Entities;
+using Domain.Common.Models;
 using MediatR;
 
 namespace Application.Products.Services
 {
-     public class DomainEventDispatcher : IDomainEventDispatcher
+    public class DomainEventDispatcher : IDomainEventDispatcher
     {
         private readonly IMediator _mediator;
 
@@ -15,20 +15,18 @@ namespace Application.Products.Services
             _mediator = mediator;
         }
 
-        public async Task DispatchEventsAsync(Entity entity)
+        public async Task DispatchEventsAsync(AggregateRoot aggregateRoot)
         {
-            var domainEvents = entity.DomainEvents.ToList();
-            entity.ClearDomainEvents(); // Limpiar los eventos después de despacharlos
+            var domainEvents = aggregateRoot.DomainEvents.ToList();
+
+            // Limpiar los eventos después de despacharlos
+            aggregateRoot.ClearDomainEvents();
 
             foreach (var domainEvent in domainEvents)
             {
-                await _mediator.Publish(domainEvent);  // Publicar evento a través de MediatR
+                // Publicar evento a través de MediatR
+                await _mediator.Publish(domainEvent);
             }
-        }
-
-        public Task DispatchEventsAsync(Product product)
-        {
-            throw new NotImplementedException();
         }
     }
 }

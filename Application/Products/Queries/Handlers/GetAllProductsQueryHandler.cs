@@ -1,11 +1,12 @@
 
-using Domain.Entities;
-using Domain.Repositories;
+
+using Domain.Product;
+using Domain.Product.Repositories;
 using MediatR;
 
 namespace Application.Products.Queries.Handlers
 {
-    public class GetAllProductsQueryHandler : IRequestHandler<GetProductsAllQuery, IEnumerable<Product>>
+    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
     {
         private readonly IProductRepository _productRepository;
 
@@ -14,7 +15,7 @@ namespace Application.Products.Queries.Handlers
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<Product>> Handle(GetProductsAllQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
             return await _productRepository.GetAllAsync();
         }

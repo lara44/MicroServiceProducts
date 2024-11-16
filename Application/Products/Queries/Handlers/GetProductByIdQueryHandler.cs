@@ -1,6 +1,6 @@
 
-using Domain.Entities;
-using Domain.Repositories;
+using Domain.Product;
+using Domain.Product.Repositories;
 using MediatR;
 
 namespace Application.Products.Queries.Handlers
