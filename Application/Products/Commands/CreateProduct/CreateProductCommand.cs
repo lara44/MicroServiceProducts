@@ -2,7 +2,7 @@
 
 using MediatR;
 
-namespace Application.Products.Commands
+namespace Application.Products.Commands.CreateProduct
 {
     public class CreateProductCommand : IRequest<Guid>
     {

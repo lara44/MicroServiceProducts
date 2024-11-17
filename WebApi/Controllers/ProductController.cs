@@ -1,9 +1,10 @@
 
-using Application.Products.Commands;
-using Application.Products.Queries;
+using Application.Products.Commands.CreateProduct;
+using Application.Products.Commands.UpdateProduct;
+using Application.Products.Queries.GetProductById;
+using Application.Products.Queries.GetProductAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Controllers
 {

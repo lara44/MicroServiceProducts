@@ -4,7 +4,7 @@ using Domain.Product;
 using Domain.Product.Repositories;
 using MediatR;
 
-namespace Application.Products.Queries.Handlers
+namespace Application.Products.Queries.GetProductAll
 {
     public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
     {

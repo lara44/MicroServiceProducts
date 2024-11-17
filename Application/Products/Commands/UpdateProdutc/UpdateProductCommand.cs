@@ -2,7 +2,7 @@
 
 using MediatR;
 
-namespace Application.Products.Commands
+namespace Application.Products.Commands.UpdateProduct
 {
     public class UpdateProductCommand : IRequest
     {

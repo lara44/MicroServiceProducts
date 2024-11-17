@@ -1,7 +1,6 @@
 using Amazon.SQS;
 using Application.Common.Interfaces;
-using Application.Products.Commands.Handlers;
-using Application.Products.Commands.Validators;
+using Application.Products.Commands.CreateProduct;
 using Application.Products.Services;
 using Domain.Common.Interfaces;
 using Domain.Product.Repositories;

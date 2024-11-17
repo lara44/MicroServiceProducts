@@ -4,7 +4,7 @@ using Domain.Product.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Products.Commands.Handlers
+namespace Application.Products.Commands.UpdateProduct
 {
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
     {

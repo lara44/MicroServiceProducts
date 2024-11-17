@@ -2,7 +2,7 @@
 using Domain.Product;
 using MediatR;
 
-namespace Application.Products.Queries
+namespace Application.Products.Queries.GetProductById
 {
     public class GetProductByIdQuery : IRequest<Product>
     {

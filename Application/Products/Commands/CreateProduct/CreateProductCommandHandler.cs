@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Domain.Product.Repositories;
 using Domain.Product;
 
-namespace Application.Products.Commands.Handlers
+namespace Application.Products.Commands.CreateProduct
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
     {

@@ -3,7 +3,7 @@ using Domain.Product;
 using Domain.Product.Repositories;
 using MediatR;
 
-namespace Application.Products.Queries.Handlers
+namespace Application.Products.Queries.GetProductById
 {
     public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product>
     {
