@@ -23,7 +23,14 @@ public sealed class Product : AggregateRoot
             Price = price;
             Stock = stock;
 
-            AddDomainEvent(new ProductCreatedEvent(this));
+            // AddDomainEvent(new ProductCreatedEvent(this));
+        }
+
+        public static Product Create(Guid id, string name, Price price, int stock)
+        {
+            var product = new Product(id, name, price, stock);
+            product.AddDomainEvent(new ProductCreatedEvent(product));
+            return product;
         }
 
         public void UpdateProduct(string name, Price price, int stock)

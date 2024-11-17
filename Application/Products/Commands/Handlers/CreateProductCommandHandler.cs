@@ -30,7 +30,8 @@ namespace Application.Products.Commands.Handlers
             request.Name, request.Price, request.Stock);
 
             var price = new Price(request.Price);
-            var product = new Product(Guid.NewGuid(), request.Name, price, request.Stock);
+            // var product = new Product(Guid.NewGuid(), request.Name, price, request.Stock);
+            var product = Product.Create(Guid.NewGuid(), request.Name, price, request.Stock);
 
             await _productRepository.AddAsync(product);
             _logger.LogInformation("Producto agregado al repositorio: Id {ProductId}", product.Id);
