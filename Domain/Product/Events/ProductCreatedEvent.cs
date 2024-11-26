@@ -1,5 +1,8 @@
+using MassTransit;
+
 namespace Domain.Product.Events;
 
+[MessageUrn("ProductCreatedEvent")]
 public class ProductCreatedEvent
 {
     public Guid Id { get; }

@@ -27,5 +27,16 @@ namespace Infrastructure.Mapping
                 product.Stock
             );
         }
+
+        public static Domain.Product.Product MapToDomainForQuery(Infrastructure.Data.Entities.Product product)
+        {
+            var price = Price.Create(product.Price); 
+            return Domain.Product.Product.GetProduct(
+                product.Id,
+                product.Name,
+                price,
+                product.Stock
+            );
+        }
     }
 }

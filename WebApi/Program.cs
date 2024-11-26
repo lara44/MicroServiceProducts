@@ -53,7 +53,7 @@ builder.Services.AddMassTransit(configure =>
         {
             h.AccessKey(builder.Configuration["AWS:AccessKey"]);
             h.SecretKey(builder.Configuration["AWS:SecretKey"]);
-            h.Scope("dev", true); // Usa el prefijo "dev" para el entorno
+            h.Scope("dev", true);
         });
 
         // Establece el nombre del tema de forma explícita

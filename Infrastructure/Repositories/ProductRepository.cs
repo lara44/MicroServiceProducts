@@ -30,13 +30,13 @@ namespace Infrastructure.Repositories
             {
                 return null!;
             }
-            return ProductMapper.ToDomainProduct(product);
+            return ProductMapper.MapToDomainForQuery(product);
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             var products = await _dataContext.Products.ToListAsync();
-            var domainProducts = products.Select(ProductMapper.ToDomainProduct);
+            var domainProducts = products.Select(ProductMapper.MapToDomainForQuery);
             return domainProducts;
         }
 

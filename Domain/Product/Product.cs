@@ -37,6 +37,12 @@ public sealed class Product : AggregateRoot
         AddDomainEvent(new ProductUpdatedEvent(this));
     }
 
+    public static Product GetProduct(Guid id, string name, Price price, int stock)
+    {
+        var product = new Product(id, name, price, stock);
+        return product;
+    }
+
     public void ReduceStock(int quantity)
     {
         if (Stock < quantity)
