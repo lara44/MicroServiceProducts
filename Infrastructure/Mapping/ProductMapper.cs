@@ -8,7 +8,7 @@ namespace Infrastructure.Mapping
     {
         public static Infrastructure.Data.Entities.Product ToProductEntity(Domain.Product.Product product)
         {
-            var price = new Price(product.Price.Amount); 
+            var price = Price.Create(product.Price.Amount); 
 
             return new Infrastructure.Data.Entities.Product
             {
@@ -20,9 +20,8 @@ namespace Infrastructure.Mapping
         }
         public static Domain.Product.Product ToDomainProduct(Infrastructure.Data.Entities.Product product)
         {
-            var price = new Price(product.Price); 
-            return new Domain.Product.Product(
-                product.Id,
+            var price = Price.Create(product.Price); 
+            return Domain.Product.Product.Create(
                 product.Name,
                 price,
                 product.Stock

@@ -1,15 +1,17 @@
-
-using Domain.Product;
-using MediatR;
-
 namespace Domain.Product.Events;
 
-public class ProductCreatedEvent : INotification
-    {
-        public Product Product { get; }
+public class ProductCreatedEvent
+{
+    public Guid Id { get; }
+    public string Name { get; }
+    public decimal Price { get; }
+    public int Stock { get; }
 
-        public ProductCreatedEvent(Product product)
-        {
-            Product = product;
-        }
+    public ProductCreatedEvent(Guid id, string name, decimal price, int stock)
+    {
+        Id = id;
+        Name = name;
+        Price = price;
+        Stock = stock;
     }
+}

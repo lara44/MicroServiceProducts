@@ -1,39 +1,36 @@
-
-using Application.Common.Interfaces;
 using Domain.Product.Events;
-using MediatR;
+using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Products.Events
+namespace Application.Products.Events;
+
+public class ProductCreatedEventHandler
 {
-    public class ProductCreatedEventHandler : INotificationHandler<ProductCreatedEvent>
+    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly ILogger<ProductCreatedEventHandler> _logger;
+
+    public ProductCreatedEventHandler(
+        IPublishEndpoint publishEndpoint,
+        ILogger<ProductCreatedEventHandler> logger)
     {
-        private const string EventType = "ProductCreated";
-        private readonly IEventPublisher _eventPublisher;
-        ILogger<ProductCreatedEventHandler> _logger;
+        _publishEndpoint = publishEndpoint;
+        _logger = logger;
+    }
 
-        public ProductCreatedEventHandler(
-            IEventPublisher eventPublisher,
-            ILogger<ProductCreatedEventHandler> logger
-        )
+    public async Task Handle(ProductCreatedEvent notification, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"Publishing ProductCreated event for Product ID: {notification.Id}");
+
+        try
         {
-            _eventPublisher = eventPublisher;
-            _logger = logger;
+            // Publica el evento directamente usando MassTransit
+            await _publishEndpoint.Publish(notification, cancellationToken);
+
+            _logger.LogInformation($"Successfully published ProductCreated event for Product ID: {notification.Id}");
         }
-
-        public async Task Handle(ProductCreatedEvent notification, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            var queueName = "ProductEventsQueue";
-            var message = new
-            {
-                Id = notification.Product.Id,
-                Name = notification.Product.Name,
-                Price = notification.Product.Price
-            };
-
-            _logger.LogInformation($"Publishing ProductCreated event for Product ID: {notification.Product.Id}");
-            await _eventPublisher.PublishAsync(message, queueName, EventType, cancellationToken);
-            _logger.LogInformation($"Published ProductCreated event for Product ID: {notification.Product.Id}");
+            _logger.LogError(ex, $"Error publishing ProductCreated event for Product ID: {notification.Id}");
         }
     }
 }

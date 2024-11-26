@@ -31,8 +31,8 @@ namespace Application.Products.Commands.UpdateProduct
                 throw new KeyNotFoundException($"El producto con el ID {request.Id} no fue encontrado.");
             }
 
-            var price = new Price(request.Price);
-            product.UpdateProduct(request.Name, price, request.Stock);
+            var price = Price.Create(request.Price);
+            product.Update(request.Name, price, request.Stock);
 
             await _productRepository.UpdateAsync(product);
             

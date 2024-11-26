@@ -3,24 +3,20 @@ using MediatR;
 
 namespace Domain.Common.Models;
 
-public class AggregateRoot
+public class AggregateRoot : Entity
 {
-        private readonly List<INotification> _domainEvents = new List<INotification>();
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
+    private readonly List<object> _domainEvents = new List<object>();
+    public IReadOnlyCollection<object> DomainEvents => _domainEvents.AsReadOnly();
 
-        // Método para agregar eventos de dominio
-        protected void AddDomainEvent(INotification eventItem)     
-        {
-            if (!_domainEvents.Contains(eventItem))
-            {
-                Console.WriteLine("Adding event: " + eventItem.GetType().Name);
-                _domainEvents.Add(eventItem);
-            }
-        }
+    protected AggregateRoot(Guid id) : base(id) { }
 
-        // Método para limpiar los eventos
-        public void ClearDomainEvents()
-        {
-            _domainEvents.Clear();
-        }
+    public void AddDomainEvent(object eventItem)
+    {
+        _domainEvents.Add(eventItem);
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
+    }
 }

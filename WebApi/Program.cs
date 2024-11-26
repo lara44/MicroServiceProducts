@@ -3,12 +3,14 @@ using Application.Common.Interfaces;
 using Application.Products.Commands.CreateProduct;
 using Application.Products.Services;
 using Domain.Common.Interfaces;
+using Domain.Product.Events;
 using Domain.Product.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Data;
 using Infrastructure.Messaging;
 using Infrastructure.Repositories;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Middlewares;
@@ -38,9 +40,33 @@ builder.Services.AddAWSService<IAmazonSQS>();
 
 // Add Interfaces
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IEventPublisher, SqsEventPublisher>();
+// builder.Services.AddScoped<IEventPublisher, SqsEventPublisher>();
 builder.Services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
+// Configurar MassTransit para usar AWS SQS como publicador
+builder.Services.AddMassTransit(configure =>
+{
+    configure.UsingAmazonSqs((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["AWS:Region"], h =>
+        {
+            h.AccessKey(builder.Configuration["AWS:AccessKey"]);
+            h.SecretKey(builder.Configuration["AWS:SecretKey"]);
+            h.Scope("dev", true); // Usa el prefijo "dev" para el entorno
+        });
+
+        // Establece el nombre del tema de forma explícita
+        cfg.Message<ProductCreatedEvent>(configTopology =>
+        {
+            configTopology.SetEntityName("dev_Domain_Product_Events-ProductCreatedEvent"); // Tema existente
+        });
+
+        // No configura colas, solo publica en el tema existente
+        cfg.ConfigureEndpoints(context, new DefaultEndpointNameFormatter("dev-", false));
+    });
+});
+
 
 var app = builder.Build();
 
