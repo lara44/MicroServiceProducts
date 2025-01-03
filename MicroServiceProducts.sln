@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{77C21DCD-8D01-4859-9021-B8AC1561BA4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceProducts.WebApi", "MicroServiceProducts.WebApi\MicroServiceProducts.WebApi.csproj", "{77C21DCD-8D01-4859-9021-B8AC1561BA4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{111C2600-8335-41A4-8F8A-4F1FECC2F00D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceProducts.Domain", "MicroServiceProducts.Domain\MicroServiceProducts.Domain.csproj", "{111C2600-8335-41A4-8F8A-4F1FECC2F00D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{2F6B1BF5-AC14-4C3F-BF68-A17F11544CE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceProducts.Application", "MicroServiceProducts.Application\MicroServiceProducts.Application.csproj", "{2F6B1BF5-AC14-4C3F-BF68-A17F11544CE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{131E831F-54FB-46F1-84F9-2016CCC48F27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceProducts.Infrastructure", "MicroServiceProducts.Infrastructure\MicroServiceProducts.Infrastructure.csproj", "{131E831F-54FB-46F1-84F9-2016CCC48F27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,10 +1,10 @@
 
-// using Application.Common.Interfaces;
-// using Domain.Product.Events;
+// using MicroServiceProducts.Application.Common.Interfaces;
+// using MicroServiceProducts.Domain.Product.Events;
 // using MediatR;
 // using Microsoft.Extensions.Logging;
 
-// namespace Application.Products.Events
+// namespace MicroServiceProducts.Application.Products.Events
 // {
 //     public class ProductUpdatedEventHandler : INotificationHandler<ProductUpdatedEvent>
 //     {
