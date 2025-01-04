@@ -43,7 +43,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
             if (postgresEx.SqlState == "23505")
             {
                 statusCode = HttpStatusCode.Conflict;  // 409 Conflict para indicar un duplicado
-                errorMessage = "Ya existe un producto con el mismo nombre. Los nombres deben ser únicos.";
+                errorMessage = "Ya existe un registro con el mismo nombre. Los nombres deben ser únicos.";
                 errorCode = "DUPLICATE_KEY_ERROR";
             }
             else

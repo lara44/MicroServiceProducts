@@ -1,7 +1,7 @@
 
 namespace Infrastructure.Data.Entities
 {
-    public class Product
+    public class ProductEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;

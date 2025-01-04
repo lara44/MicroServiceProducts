@@ -16,7 +16,6 @@ public sealed class Product : AggregateRoot
         Price = price;
         Stock = stock;
     }
-
     public static Product Create(string name, Price price, int stock)
     {
         if (string.IsNullOrWhiteSpace(name))

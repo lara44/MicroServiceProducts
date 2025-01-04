@@ -10,13 +10,17 @@ namespace Infrastructure.Data
         {
         }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductEntity> Products { get; set; }
+        public DbSet<CategoryEntity> Categories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Product>().HasIndex(c => c.Name).IsUnique();
-            modelBuilder.Entity<Product>().HasKey(p => p.Id);
-            modelBuilder.Entity<Product>().Property(p => p.Name).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<ProductEntity>().HasIndex(c => c.Name).IsUnique();
+            modelBuilder.Entity<ProductEntity>().HasKey(p => p.Id);
+            modelBuilder.Entity<ProductEntity>().Property(p => p.Name).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<CategoryEntity>().HasIndex(c => c.Name).IsUnique();
+            modelBuilder.Entity<CategoryEntity>().HasKey(p => p.Id);
+            modelBuilder.Entity<CategoryEntity>().Property(p => p.Name).IsRequired().HasMaxLength(100);
         }
     }
 }
