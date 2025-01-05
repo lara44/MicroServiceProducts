@@ -21,4 +21,12 @@ public sealed class Category : AggregateRoot
         category.AddDomainEvent(new CategoryEvent(category));
         return category;
     }
+
+    public static Category GetCategory(Guid id, string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Category name cannot be empty.", nameof(name));
+
+        return new Category(id, name);
+    }
 }

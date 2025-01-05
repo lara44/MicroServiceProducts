@@ -1,6 +1,7 @@
 using System;
 using System.Data.Common;
 using Domain.Category;
+using Domain.Product;
 using Infrastructure.Data.Entities;
 
 namespace Infrastructure.Mapping;
@@ -15,4 +16,12 @@ public static class CategoryMapper
             Name = category.Name
         };
     }
+
+      public static Category MapToDomainForQuery(CategoryEntity category)
+        {
+            return Category.GetCategory(
+                category.Id,
+                category.Name!
+            );
+        }
 }

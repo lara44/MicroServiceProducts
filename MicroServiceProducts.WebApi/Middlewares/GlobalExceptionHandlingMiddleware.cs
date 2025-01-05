@@ -53,6 +53,12 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
                 errorCode = "DB_UPDATE_ERROR";
             }
         }
+        else if (exception is KeyNotFoundException)
+        {
+            statusCode = HttpStatusCode.NotFound;
+            errorMessage = "El recurso solicitado no fue encontrado. " + exception.Message;
+            errorCode = "RESOURCE_NOT_FOUND";
+        }
         else if (exception is ArgumentException)
         {
             statusCode = HttpStatusCode.BadRequest;
