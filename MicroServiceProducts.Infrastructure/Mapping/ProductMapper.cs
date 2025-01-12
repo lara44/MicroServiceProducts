@@ -1,5 +1,6 @@
 
 
+using Domain.Category;
 using Domain.Product;
 using Infrastructure.Data.Entities;
 
@@ -32,11 +33,13 @@ namespace Infrastructure.Mapping
         public static Product MapToDomainForQuery(ProductEntity product)
         {
             var price = Price.Create(product.Price); 
+
             return Product.GetProduct(
                 product.Id,
                 product.Name,
                 price,
-                product.Stock
+                product.Stock,
+                product.ProductCategories!.Select(pc => Category.GetCategory(pc.Category!.Id, pc.Category.Name)).ToList()
             );
         }
     }

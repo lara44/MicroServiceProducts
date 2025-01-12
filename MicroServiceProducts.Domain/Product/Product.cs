@@ -1,4 +1,5 @@
 
+using Domain.Category;
 using Domain.Common.Models;
 using Domain.Product.Events;
 
@@ -9,12 +10,14 @@ public sealed class Product : AggregateRoot
     public string Name { get; private set; }
     public Price Price { get; private set; }
     public int Stock { get; private set; }
+    public List<Category.Category> Categories { get; private set; }
 
     private Product(Guid Id, string name, Price price, int stock) : base(Id)
     {
         Name = name;
         Price = price;
         Stock = stock;
+        Categories = new List<Category.Category>();
     }
     public static Product Create(string name, Price price, int stock)
     {
@@ -36,9 +39,32 @@ public sealed class Product : AggregateRoot
         AddDomainEvent(new ProductUpdatedEvent(this));
     }
 
-    public static Product GetProduct(Guid id, string name, Price price, int stock)
+    public void AddCategory(Category.Category category)
+    {
+        if (Categories.Any(c => c.Id == category.Id))
+            throw new InvalidOperationException("Category already assigned to the product.");
+
+        Categories.Add(category);
+    }
+
+    public void RemoveCategory(Guid categoryId)
+    {
+        var category = Categories.FirstOrDefault(c => c.Id == categoryId);
+        if (category == null)
+            throw new InvalidOperationException("Category not found.");
+
+        Categories.Remove(category);
+    }
+
+    public static Product GetProduct(Guid id, string name, Price price, int stock, List<Category.Category> categories)
     {
         var product = new Product(id, name, price, stock);
+        
+        foreach (var category in categories)
+        {
+            product.AddCategory(category);
+        }
+
         return product;
     }
 
