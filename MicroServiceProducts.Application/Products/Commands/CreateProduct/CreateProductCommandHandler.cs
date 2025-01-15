@@ -32,7 +32,7 @@ namespace Application.Products.Commands.CreateProduct
             var price = Price.Create(request.Price);
             var product = Product.Create(request.Name, price, request.Stock);
 
-            await _productRepository.AddAsync(product);
+            await _productRepository.AddAsync(product, request.CategoryIds);
             _logger.LogInformation("Producto agregado al repositorio: Id {ProductId}", product.Id);
 
             _logger.LogInformation("Eventos de dominio despachados para el producto Id {ProductId}", product.Id);

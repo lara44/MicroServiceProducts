@@ -1,16 +1,18 @@
 
 
+using Domain.Category;
 using Domain.Product;
+using Infrastructure.Data.Entities;
 
 namespace Infrastructure.Mapping
 {
     public static class ProductMapper
     {
-        public static Infrastructure.Data.Entities.Product ToProductEntity(Domain.Product.Product product)
+        public static ProductEntity ToProductEntity(Product product)
         {
             var price = Price.Create(product.Price.Amount); 
 
-            return new Infrastructure.Data.Entities.Product
+            return new ProductEntity
             {
                 Id = product.Id,
                 Name = product.Name,
@@ -18,24 +20,26 @@ namespace Infrastructure.Mapping
                 Stock = product.Stock,
             };
         }
-        public static Domain.Product.Product ToDomainProduct(Infrastructure.Data.Entities.Product product)
+        public static Product ToDomainProduct(ProductEntity product)
         {
             var price = Price.Create(product.Price); 
-            return Domain.Product.Product.Create(
+            return Product.Create(
                 product.Name,
                 price,
                 product.Stock
             );
         }
 
-        public static Domain.Product.Product MapToDomainForQuery(Infrastructure.Data.Entities.Product product)
+        public static Product MapToDomainForQuery(ProductEntity product)
         {
             var price = Price.Create(product.Price); 
-            return Domain.Product.Product.GetProduct(
+
+            return Product.GetProduct(
                 product.Id,
                 product.Name,
                 price,
-                product.Stock
+                product.Stock,
+                product.ProductCategories!.Select(pc => Category.GetCategory(pc.Category!.Id, pc.Category.Name)).ToList()
             );
         }
     }

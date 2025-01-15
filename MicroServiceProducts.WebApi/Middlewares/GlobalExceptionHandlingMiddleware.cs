@@ -43,7 +43,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
             if (postgresEx.SqlState == "23505")
             {
                 statusCode = HttpStatusCode.Conflict;  // 409 Conflict para indicar un duplicado
-                errorMessage = "Ya existe un producto con el mismo nombre. Los nombres deben ser únicos.";
+                errorMessage = "Ya existe un registro con el mismo nombre. Los nombres deben ser únicos.";
                 errorCode = "DUPLICATE_KEY_ERROR";
             }
             else
@@ -52,6 +52,12 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
                 errorMessage = postgresEx.Message;
                 errorCode = "DB_UPDATE_ERROR";
             }
+        }
+        else if (exception is KeyNotFoundException)
+        {
+            statusCode = HttpStatusCode.NotFound;
+            errorMessage = "El recurso solicitado no fue encontrado. " + exception.Message;
+            errorCode = "RESOURCE_NOT_FOUND";
         }
         else if (exception is ArgumentException)
         {
