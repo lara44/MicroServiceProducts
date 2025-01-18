@@ -17,20 +17,20 @@ namespace Infrastructure.Repositories
             _dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
-        public async Task AddAsync(Product product, List<Guid> categoryIds)
+        public async Task AddAsync(Product product)
         {
             var productEntity = ProductMapper.ToProductEntity(product);
             
             // Asocia las categorías al producto
-            if (categoryIds != null && categoryIds.Any())
+            if (product.Categories != null && product.Categories.Any())
             {
-                foreach (var categoryId in categoryIds)
+                foreach (var categoryId in product.Categories)
                 {
                     var productCategory = new ProductCategoryEntity
                     {
                         Id = Guid.NewGuid(),
                         ProductId = productEntity.Id,
-                        CategoryId = categoryId
+                        CategoryId = categoryId.Id
                     };
                     productEntity.ProductCategories ??= new List<ProductCategoryEntity>();
                     productEntity.ProductCategories.Add(productCategory);
