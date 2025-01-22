@@ -10,7 +10,7 @@ public sealed class Product : AggregateRoot
     public string Name { get; private set; }
     public Price Price { get; private set; }
     public int Stock { get; private set; }
-    public List<Category.Category> Categories { get; private set; }
+    public List<Category.Category> Categories { get; private set; } = new List<Category.Category>();
 
     private Product(Guid Id, string name, Price price, int stock) : base(Id)
     {
