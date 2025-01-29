@@ -35,11 +35,6 @@ namespace WebApi.Controllers
         [HttpPost("CreateProduct")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);  // Validación de entrada
-            }
-
             var productId = await _mediator.Send(command);
             return Ok(new { id = productId });
         }
