@@ -6,6 +6,8 @@ using Domain.Common.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
+using MicroServiceProducts.Application.Products.Services;
+using MicroServiceProducts.Application.Products.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -27,6 +29,7 @@ public static class DependencyInjection
 
         // Registro de servicios específicos de Application
         services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+        services.AddScoped<ICategoryValidator, CategoryValidator>();
 
         return services;
     }

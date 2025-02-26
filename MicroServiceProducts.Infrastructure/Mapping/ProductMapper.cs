@@ -18,6 +18,7 @@ namespace Infrastructure.Mapping
                 Name = product.Name,
                 Price = price.Amount,
                 Stock = product.Stock,
+                ProductCategories = new List<ProductCategoryEntity>()
             };
         }
         public static Product ToDomainProduct(ProductEntity product)
@@ -39,8 +40,30 @@ namespace Infrastructure.Mapping
                 product.Name,
                 price,
                 product.Stock,
-                product.ProductCategories!.Select(pc => Category.GetCategory(pc.Category!.Id, pc.Category.Name)).ToList()
+                product.ProductCategories!.Select(pc => Category.GetCategory(pc.Category!.Id, pc.Category.Name!)).ToList()
             );
+        }
+
+        public static void MapCategoriesToProduct(Product product, ProductEntity productEntity)
+        {
+            productEntity.ProductCategories ??= new List<ProductCategoryEntity>();
+
+            // Limpia categorías existentes (para evitar duplicados en updates)
+            productEntity.ProductCategories.Clear();
+
+            if (product.Categories != null && product.Categories.Any())
+            {
+                foreach (var category in product.Categories)
+                {
+                    var productCategory = new ProductCategoryEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        ProductId = productEntity.Id,
+                        CategoryId = category.Id
+                    };
+                    productEntity.ProductCategories.Add(productCategory);
+                }
+            }
         }
     }
 }
