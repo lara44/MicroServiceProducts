@@ -6,6 +6,6 @@ namespace Domain.Product.Repositories;
     {
         Task<Product> GetByIdAsync(Guid id);
         Task<IEnumerable<Product>> GetAllAsync();
-        Task AddAsync(Product product, List<Guid> categoryIds);
+        Task AddAsync(Product product);
         Task UpdateAsync(Product product);
     }

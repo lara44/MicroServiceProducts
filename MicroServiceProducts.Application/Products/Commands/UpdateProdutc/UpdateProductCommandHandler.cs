@@ -2,22 +2,26 @@ using Domain.Common.Interfaces;
 using Domain.Product;
 using Domain.Product.Repositories;
 using MediatR;
+using MicroServiceProducts.Application.Products.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Products.Commands.UpdateProduct
 {
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
     {
+        private readonly ICategoryValidator _categoryValidator;
         private readonly IProductRepository _productRepository;
         private readonly IDomainEventDispatcher _domainEventDispatcher;
         private readonly ILogger<UpdateProductCommandHandler> _logger;
 
         public UpdateProductCommandHandler(
-            IProductRepository productRepository,  
+            ICategoryValidator categoryValidator,
+            IProductRepository productRepository,
             IDomainEventDispatcher domainEventDispatcher,
             ILogger<UpdateProductCommandHandler> logger
         )
         {
+            _categoryValidator = categoryValidator;
             _productRepository = productRepository;
             _domainEventDispatcher = domainEventDispatcher;
             _logger = logger;
@@ -25,17 +29,23 @@ namespace Application.Products.Commands.UpdateProduct
         public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
-
             if (product == null)
             {
                 throw new KeyNotFoundException($"El producto con el ID {request.Id} no fue encontrado.");
             }
 
             var price = Price.Create(request.Price);
-            product.Update(request.Name, price, request.Stock);
+            product.Update(request.Name!, price, request.Stock);
+
+            var categories = await _categoryValidator.ValidateCategories(request.CategoryIds);
+            product.Categories.Clear(); // Remueve las categorías existentes
+            foreach (var category in categories)
+            {
+                product.AddCategory(category);
+            }
 
             await _productRepository.UpdateAsync(product);
-            
+
             _logger.LogInformation("Despachar Evento de dominio ProductUpdateEvent para el producto {ProductId}", product.Id);
             await _domainEventDispatcher.DispatchEventsAsync(product);
             return Unit.Value;

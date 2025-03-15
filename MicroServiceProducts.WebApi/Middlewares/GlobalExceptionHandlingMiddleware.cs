@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Text.Json;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -35,9 +36,24 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         var statusCode = HttpStatusCode.InternalServerError;
         var errorMessage = "Error inesperado en el servidor.";
         var errorCode = "GENERIC_ERROR";
+        object? errors = null;
 
+        if (exception is ValidationException validationException)
+        {
+            // Manejo de errores de FluentValidation
+            statusCode = HttpStatusCode.BadRequest; // 400 Bad Request
+            errorMessage = "Errores de validación en la solicitud.";
+            errorCode = "VALIDATION_ERROR";
+
+            // Construir los errores de validación
+            errors = validationException.Errors.Select(err => new
+            {
+                Field = err.PropertyName,
+                Error = err.ErrorMessage
+            });
+        }
         // Manejo específico de DbUpdateException para manejar claves duplicadas en PostgreSQL
-        if (exception is DbUpdateException dbUpdateEx && dbUpdateEx.InnerException is PostgresException postgresEx)
+        else if (exception is DbUpdateException dbUpdateEx && dbUpdateEx.InnerException is PostgresException postgresEx)
         {
             // Verificar si es un error por clave duplicada (SqlState: "23505")
             if (postgresEx.SqlState == "23505")
@@ -77,6 +93,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         {
             error = errorMessage,
             errorCode = errorCode,
+            errors = errors, // Incluye detalles adicionales si existen (validación)
             statusCode = (int)statusCode,
             timestamp = DateTime.UtcNow
         });
