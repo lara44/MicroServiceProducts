@@ -4,6 +4,7 @@ using Domain.Product.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Data.Entities;
 using Infrastructure.Mapping;
+using MassTransit.Futures.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -60,44 +61,35 @@ namespace Infrastructure.Repositories
 
             if (existingProduct != null)
             {
-                // var productEntity = ProductMapper.ToProductEntity(product);
-
-                // Actualizar propiedades simples
                 existingProduct.Name = product.Name;
                 existingProduct.Price = product.Price.Amount!;
                 existingProduct.Stock = product.Stock;
-
-                // Actualizar las categorías asociadas
                 UpdateProductCategories(existingProduct, product);
+                await _dataContext.SaveChangesAsync();
             }
-
-            await _dataContext.SaveChangesAsync();
         }
 
         public void UpdateProductCategories(ProductEntity existingProduct, Product product)
         {
-            if (existingProduct.ProductCategories == null)
-            {
-                existingProduct.ProductCategories = new List<ProductCategoryEntity>();
-            }
+            // Si la lista es null, inicializarla
+            existingProduct.ProductCategories ??= new List<ProductCategoryEntity>();
 
             // Obtener IDs actuales y nuevos
             var existingCategoryIds = existingProduct.ProductCategories.Select(pc => pc.CategoryId).ToHashSet();
             var newCategoryIds = product.Categories.Select(c => c.Id).ToHashSet();
 
             // Agregar nuevas categorías
-            var categoriesToAdd = newCategoryIds.Except(existingCategoryIds).ToList();
-            foreach (var categoryId in categoriesToAdd)
-            {
-                var newProductCategory = new ProductCategoryEntity
+            var categoriesToAdd = newCategoryIds.Except(existingCategoryIds)
+                .Select(categoryId => new ProductCategoryEntity
                 {
                     Id = Guid.NewGuid(),
                     ProductId = existingProduct.Id,
                     CategoryId = categoryId
-                };
+                }).ToList();
 
-                _dataContext.ProductCategories.Add(newProductCategory);
-                existingProduct.ProductCategories.Add(newProductCategory); // Actualizar la lista
+            if (categoriesToAdd.Any())
+            {
+                _dataContext.ProductCategories.AddRange(categoriesToAdd);
             }
 
             // Eliminar categorías no necesarias
@@ -105,10 +97,9 @@ namespace Infrastructure.Repositories
                 .Where(pc => !newCategoryIds.Contains(pc.CategoryId))
                 .ToList();
 
-            foreach (var categoryToRemove in categoriesToRemove)
+            if (categoriesToRemove.Any())
             {
-                _dataContext.ProductCategories.Remove(categoryToRemove);
-                existingProduct.ProductCategories.Remove(categoryToRemove); // Actualizar la lista
+                _dataContext.ProductCategories.RemoveRange(categoriesToRemove);
             }
         }
     }

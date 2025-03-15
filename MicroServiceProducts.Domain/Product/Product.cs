@@ -21,11 +21,6 @@ public sealed class Product : AggregateRoot
     }
     public static Product Create(string name, Price price, int stock)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Product name cannot be empty.", nameof(name));
-        if (stock < 0)
-            throw new ArgumentException("Stock cannot be negative.", nameof(stock));
-
         var product = new Product(Guid.NewGuid(), name, price, stock);
         product.AddDomainEvent(new ProductCreatedEvent(product.Id, product.Name, product.Price.Amount, product.Stock));
         return product;
@@ -56,7 +51,7 @@ public sealed class Product : AggregateRoot
         Categories.Remove(category);
     }
 
-    public static Product GetProduct(Guid id, string name, Price price, int stock, List<Category.Category> categories)
+    public static Product Restore(Guid id, string name, Price price, int stock, List<Category.Category> categories)
     {
         var product = new Product(id, name, price, stock);
         

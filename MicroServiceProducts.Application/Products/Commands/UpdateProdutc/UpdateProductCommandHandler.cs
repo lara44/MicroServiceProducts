@@ -29,7 +29,6 @@ namespace Application.Products.Commands.UpdateProduct
         public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
-
             if (product == null)
             {
                 throw new KeyNotFoundException($"El producto con el ID {request.Id} no fue encontrado.");
@@ -39,13 +38,10 @@ namespace Application.Products.Commands.UpdateProduct
             product.Update(request.Name!, price, request.Stock);
 
             var categories = await _categoryValidator.ValidateCategories(request.CategoryIds);
-
+            product.Categories.Clear(); // Remueve las categorías existentes
             foreach (var category in categories)
             {
-                if (!product.Categories.Any(c => c.Id == category.Id)) // Verificar si ya existe
-                {
-                    product.AddCategory(category);
-                }
+                product.AddCategory(category);
             }
 
             await _productRepository.UpdateAsync(product);

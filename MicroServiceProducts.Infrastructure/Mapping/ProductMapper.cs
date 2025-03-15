@@ -35,7 +35,7 @@ namespace Infrastructure.Mapping
         {
             var price = Price.Create(product.Price); 
 
-            return Product.GetProduct(
+            return Product.Restore(
                 product.Id,
                 product.Name,
                 price,
